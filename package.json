@@ -4,7 +4,8 @@
   "description": "demo http server",
   "main": "bin/server.js",
   "scripts": {
-    "test": "npm test"
+    "debug": "DEBUG=http-server:* node ./bin/server",
+    "start": "node ./bin/server"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
     "cookie-parser": "^1.4.3",
     "ejs": "^2.5.6",
     "express": "^4.15.2",
+    "morgan": "^1.9.0",
     "request": "^2.81.0"
   },
   "devDependencies": {
