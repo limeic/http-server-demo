@@ -1,7 +1,7 @@
 // 处理首页信息
 
 import express, {Router} from 'express';
-import { request } from 'http';
+import Request from 'request';
 
 let router = new Router();
 
@@ -37,8 +37,8 @@ router.post('/broadcast', (req, res, next) => {
     };
 
     // 判断userId是否存在
-    if ( !data.userId ) {
-        console.error("no userId exists in body: ", data.userId);
+    if ( !data.toUserIdList ) {
+        console.error("no toUserIdList exists in body: ", data.userId);
         resp.code = 500;
         resp.msg = "no userId exists!";
         res.send(resp);
@@ -54,7 +54,25 @@ router.post('/broadcast', (req, res, next) => {
         return ;
     }
 
-    //TODO: 通知到gateway broadcast server
+    // 通知到gateway broadcast server
+    let broadcastUrl = data.gatewayDomain + "/broadcast";
+    console.log("broadcastUrl: ", broadcastUrl);
+    let param = {
+        toUserIdList: data.toUserIdList,
+        content: JSON.stringify(data.data)
+    };
+    console.log("send param: ", param);
+    Request({
+        url: broadcastUrl,
+        method: "POST",
+        json: param
+    }, (err, resp, body) => {
+        if ( !!err ) {
+            console.log("broadcast err: ", err);
+            return ;
+        }    
+        console.log("broadcast resp body: ", body);
+    });
 
     res.send(resp);
     res.end();

@@ -4,7 +4,9 @@ var _express = require('express');
 
 var _express2 = _interopRequireDefault(_express);
 
-var _http = require('http');
+var _request = require('request');
+
+var _request2 = _interopRequireDefault(_request);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -44,8 +46,8 @@ router.post('/broadcast', function (req, res, next) {
     };
 
     // 判断userId是否存在
-    if (!data.userId) {
-        console.error("no userId exists in body: ", data.userId);
+    if (!data.toUserIdList) {
+        console.error("no toUserIdList exists in body: ", data.userId);
         resp.code = 500;
         resp.msg = "no userId exists!";
         res.send(resp);
@@ -61,7 +63,25 @@ router.post('/broadcast', function (req, res, next) {
         return;
     }
 
-    //TODO: 通知到gateway broadcast server
+    // 通知到gateway broadcast server
+    var broadcastUrl = data.gatewayDomain + "/broadcast";
+    console.log("broadcastUrl: ", broadcastUrl);
+    var param = {
+        toUserIdList: data.toUserIdList,
+        content: JSON.stringify(data.data)
+    };
+    console.log("send param: ", param);
+    (0, _request2.default)({
+        url: broadcastUrl,
+        method: "POST",
+        json: param
+    }, function (err, resp, body) {
+        if (!!err) {
+            console.log("broadcast err: ", err);
+            return;
+        }
+        console.log("broadcast resp body: ", body);
+    });
 
     res.send(resp);
     res.end();
