@@ -8,13 +8,15 @@ var _request = require('request');
 
 var _request2 = _interopRequireDefault(_request);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _util = require('util');
 
-// 处理首页信息
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var router = new _express.Router();
 
 // index默认路由
+// 处理首页信息
+
 router.get('/', function (req, res, next) {
     res.render('index', {});
 });
@@ -45,6 +47,14 @@ router.post('/broadcast', function (req, res, next) {
         "msg": "success"
     };
 
+    if (!data.appId) {
+        console.error("no appId exists in body: ", data.appId);
+        resp.code = 500;
+        resp.msg = "no appId exists!";
+        res.send(resp);
+        return;
+    }
+
     // 判断userId是否存在
     if (!data.toUserIdList) {
         console.error("no toUserIdList exists in body: ", data.userId);
@@ -67,6 +77,7 @@ router.post('/broadcast', function (req, res, next) {
     var broadcastUrl = data.gatewayDomain + "/broadcast";
     console.log("broadcastUrl: ", broadcastUrl);
     var param = {
+        appId: data.appId,
         toUserIdList: data.toUserIdList,
         content: JSON.stringify(data.data)
     };

@@ -2,6 +2,7 @@
 
 import express, {Router} from 'express';
 import Request from 'request';
+import { log } from 'util';
 
 let router = new Router();
 
@@ -36,6 +37,14 @@ router.post('/broadcast', (req, res, next) => {
         "msg": "success"
     };
 
+    if ( !data.appId ) {
+        console.error("no appId exists in body: ", data.appId);
+        resp.code = 500;
+        resp.msg = "no appId exists!";
+        res.send(resp);
+        return ;
+    }
+
     // 判断userId是否存在
     if ( !data.toUserIdList ) {
         console.error("no toUserIdList exists in body: ", data.userId);
@@ -58,6 +67,7 @@ router.post('/broadcast', (req, res, next) => {
     let broadcastUrl = data.gatewayDomain + "/broadcast";
     console.log("broadcastUrl: ", broadcastUrl);
     let param = {
+        appId: data.appId,
         toUserIdList: data.toUserIdList,
         content: JSON.stringify(data.data)
     };
