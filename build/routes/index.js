@@ -74,7 +74,7 @@ router.post('/broadcast', function (req, res, next) {
     }
 
     // 通知到gateway broadcast server
-    var broadcastUrl = data.gatewayDomain + "/broadcast";
+    var broadcastUrl = data.gatewayDomain + "/api/data/broadcast";
     console.log("broadcastUrl: ", broadcastUrl);
     var param = {
         appId: data.appId,
