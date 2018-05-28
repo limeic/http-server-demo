@@ -64,7 +64,7 @@ router.post('/broadcast', (req, res, next) => {
     }
 
     // 通知到gateway broadcast server
-    let broadcastUrl = data.gatewayDomain + "/broadcast";
+    let broadcastUrl = data.gatewayDomain + "/api/data/broadcast";
     console.log("broadcastUrl: ", broadcastUrl);
     let param = {
         appId: data.appId,
