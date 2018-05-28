@@ -77,9 +77,9 @@ router.post('/broadcast', function (req, res, next) {
     var broadcastUrl = data.gatewayDomain + "/api/data/broadcast";
     console.log("broadcastUrl: ", broadcastUrl);
     var param = {
-        appId: data.appId,
+        appKey: data.appId,
         toUserIdList: data.toUserIdList,
-        content: JSON.stringify(data.data)
+        data: JSON.stringify(data.data)
     };
     console.log("send param: ", param);
     (0, _request2.default)({
