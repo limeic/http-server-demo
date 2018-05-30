@@ -68,7 +68,7 @@ router.post('/broadcast', (req, res, next) => {
     //  从Lemon RESTful API中获取appId对应的domain列表。每个domain列表都需要发送请求
     // 测试地址
     Request({
-        url: "http://test.api.limeic.com/rest/connectors/http",
+        url: "https://api.limeic.com/rest/connectors/http",
         method: "POST",
         json: {
             appKey: data.appKey,
